@@ -27,6 +27,8 @@ public class MethodLogAspect {
     @Around("@annotation(com.pk.config.MethodLog)")
     public Object advice(ProceedingJoinPoint joinPoint) throws Throwable{
         Signature signature = joinPoint.getSignature();
+        String method = signature.getDeclaringTypeName() +"."+ signature.getName();
+        logger.info("Into {}",method);
         Object[] objects = joinPoint.getArgs();
         String[] parameterNames = ((MethodSignature) signature).getParameterNames();
         int objectsLength = objects.length;
@@ -35,7 +37,6 @@ public class MethodLogAspect {
             logger.info("{} = {}",parameterNames[i],o);
         }
 
-        logger.info("Into {}");
         //接收被注解的方法返回的值，返回给调用方
         Object object = joinPoint.proceed();
         logger.info("after method");
